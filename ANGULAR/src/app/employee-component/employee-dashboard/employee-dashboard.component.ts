@@ -43,6 +43,10 @@ export class EmployeeDashboardComponent implements OnInit {
     }
  }
 
+ route(){
+  this.router.navigate(["/create-employee"])
+}
+
 
 
 }

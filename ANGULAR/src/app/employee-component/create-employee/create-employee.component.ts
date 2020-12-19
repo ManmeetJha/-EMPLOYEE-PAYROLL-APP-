@@ -14,10 +14,15 @@ export class CreateEmployeeComponent implements OnInit {
 
   @ViewChildren ('checkBox') checkBox:QueryList<any>;
   employee: Employee = new Employee();
+  id: any;
+  a: boolean = false;
   submitted = false;
   userDetail: FormGroup;
   checked = [];
   precio = 0;
+  employees: any;
+  isEdit: Boolean;
+  departments: string[] = []
   department =['Hr','Sales', 'Finance', 'Engineer','Other'];
 
 
@@ -45,6 +50,28 @@ export class CreateEmployeeComponent implements OnInit {
       note: [null, Validators.required],
       profilePic: [null, Validators.required]
     });
+    this.route.params.subscribe(param => {
+      console.log(param)
+      if(param && param.id) {
+        console.log("inside if")
+        this.employeeService.getEmployee(param.id).subscribe((response: any) => {
+          console.log(response)
+          this.id = param.id;
+          this.isEdit = true;
+          this.userDetail.controls["name"].setValue(response.name)
+          this.userDetail.controls["salary"].setValue(response.salary)
+          this.userDetail.controls["gender"].setValue(response.gender)
+          this.userDetail.controls["profilePic"].setValue(response.profilePic)
+          var str = response.startDate;
+          var splited: [0, 1, 2] = str.split(" ");
+          this.departments = response.departments;
+          console.log("department", this.departments)
+          this.userDetail.controls["day"].setValue(splited[0])
+          this.userDetail.controls["month"].setValue(splited[1])
+          this.userDetail.controls["year"].setValue(splited[2])
+        })
+      }
+    })
   }
 
   getCheckbox(checkbox){
@@ -147,6 +174,24 @@ export class CreateEmployeeComponent implements OnInit {
     // alert("Submitted Succesfully ")
    }
 
+   update(){
+    console.log(this.userDetail.controls['gender'].value+""+this.userDetail.controls['month'].value)
+    var employeeDto = {
+      'profilePic':this.userDetail.controls['profilePic'].value,
+      'id':this.id,
+      'name': this.userDetail.controls['name'].value,
+      'salary': this.precio,
+      'departments': this.checked,
+      'gender': this.userDetail.controls['gender'].value,
+      'startDate': this.userDetail.controls['day'].value + " " +this.userDetail.controls['month'].value + " " +this.userDetail.controls['year'].value  
+    };
+    this.employeeService.updateEmployee(this.id,employeeDto).subscribe((response:any) => {
+      console.log("response is " +response);
+      this.router.navigate(["/"]);
+    })
+    
+  }
+
   onReset() {
     this.userDetail.reset();
   }
@@ -154,6 +199,9 @@ export class CreateEmployeeComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.register();
+  }
+  toggleCheckBox(department){
+    return (this.departments.includes(department)) ? true : false;
   }
 
 }

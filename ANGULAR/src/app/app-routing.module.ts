@@ -5,6 +5,7 @@ import { EmployeeDashboardComponent } from './employee-component/employee-dashbo
 
 const routes: Routes = [
   { path: "create", component: CreateEmployeeComponent },
+  { path: "create/:id", component: CreateEmployeeComponent },
   { path: "", component: EmployeeDashboardComponent }
 ];
 

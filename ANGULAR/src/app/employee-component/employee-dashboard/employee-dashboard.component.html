@@ -20,7 +20,8 @@ margin-top: 1%;">
 <div class="panel panel-default">
     <div class="tableWrapper">
         <div class="containerTitle" fxLayout="row" fxLayoutAlign="space-around center">
-            <div class="oneTitle">Id</div>
+            <div class="oneTitle" text-align: center>Id</div>
+            <div class="oneTitle">Profile Pic</div>
             <div class="oneTitle">Name</div>
             <div class="oneTitle">Salary</div>
             <div class="oneTitle">Department</div>
@@ -29,8 +30,10 @@ margin-top: 1%;">
             <div class="oneTitle">Actions</div>
         </div>
 
-        <div class="containerListItems" fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let employee of employees;" [style.background-color]="changeColorOne()">
+        <div class="containerListItems" fxLayout="row" fxLayoutAlign="space-around center"
+            *ngFor="let employee of employees;" [style.background-color]="changeColorOne()">
             <div class="one">{{employee.employeeId}}</div>
+            <div class="one"><img src={{employee.profilePic}} alt=""></div>
             <div class="two">{{employee.name}}</div>
             <div class="two">{{employee.salary}}</div>
             <div class="two">{{employee.departments}}</div>
@@ -38,8 +41,10 @@ margin-top: 1%;">
             <div class="two">{{employee.startDate}}</div>
 
             <div class="three" fxLayout="row">
-                <button mat-raised-button [routerLink]="['/create', employee.id]">E</button>
-                <button mat-raised-button (click)="deleteEmployee(employee.id)">X</button>
+                <button mat-raised-button style="background-color:lightgreen;"
+                    [routerLink]="['/create',employee.employeeId]">Edit</button>
+                <button mat-raised-button color="warn"
+                    (click)="deleteEmployee(employee.employeeId)">Delete</button>
             </div>
         </div>
     </div>
