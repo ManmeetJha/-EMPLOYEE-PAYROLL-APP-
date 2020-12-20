@@ -18,8 +18,8 @@ export class CreateEmployeeComponent implements OnInit {
   a: boolean = false;
   submitted = false;
   userDetail: FormGroup;
-  checked = [];
-  precio = 0;
+  checked;
+  precio;
   employees: any;
   isEdit: Boolean;
   departments: string[] = []
@@ -58,13 +58,13 @@ export class CreateEmployeeComponent implements OnInit {
           console.log(response)
           this.id = param.id;
           this.isEdit = true;
-          this.userDetail.controls["name"].setValue(response.name)
-          this.userDetail.controls["salary"].setValue(response.salary)
-          this.userDetail.controls["gender"].setValue(response.gender)
-          this.userDetail.controls["profilePic"].setValue(response.profilePic)
-          var str = response.startDate;
+          this.userDetail.controls["name"].setValue(response.data.name)
+          this.userDetail.controls["salary"].setValue(response.data.salary)
+          this.userDetail.controls["gender"].setValue(response.data.gender)
+          this.userDetail.controls["profilePic"].setValue(response.data.profilePic)
+          var str = response.data.startDate;
           var splited: [0, 1, 2] = str.split(" ");
-          this.departments = response.departments;
+          this.departments = response.data.departments;
           console.log("department", this.departments)
           this.userDetail.controls["day"].setValue(splited[0])
           this.userDetail.controls["month"].setValue(splited[1])
@@ -165,12 +165,13 @@ export class CreateEmployeeComponent implements OnInit {
       'note':this.userDetail.controls['note'].value,
       'profilePic':this.userDetail.controls['profilePic'].value
     };
+
     console.log("employee dto is", employeeDto)
     this.employeeService.createEmployee(employeeDto).subscribe((response: any) => {
       console.log("response is " +JSON.stringify(response));
     })
     // this.userDetail.reset();
-    this.router.navigate(["/"]);
+    this.router.navigate(["/"]).then(()=>{window.location.reload()});
     // alert("Submitted Succesfully ")
    }
 

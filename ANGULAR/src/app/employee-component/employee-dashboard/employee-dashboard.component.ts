@@ -11,11 +11,13 @@ export class EmployeeDashboardComponent implements OnInit {
 
   employees:any;
   color:any;
+  dataRefresher:any;
 
   constructor(private employeeService: UserServicesService, private router: Router) { }
 
   ngOnInit() {
     this.reloadData();
+   
   }
 
   reloadData() {
@@ -46,6 +48,8 @@ export class EmployeeDashboardComponent implements OnInit {
  route(){
   this.router.navigate(["/create-employee"])
 }
+
+
 
 
 
